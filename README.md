@@ -39,7 +39,8 @@ Developed by Sayyed Mohsin Ali
 
 GitHub: @SayyedMohsin
 
-LinkedIn: Sayyed Mohsin Ali
+LinkedIn:www.linkedin.com/in/sayyed-mohsin-ali-63b8032b2
+
 
 ## 📄 License
 This project is licensed under the MIT License.
