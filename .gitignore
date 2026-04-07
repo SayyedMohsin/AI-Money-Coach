@@ -1,0 +1,18 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+
+# Database file (Personal data should not be on GitHub)
+*.db
+finance_data.db
+
+# Environment variables
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
