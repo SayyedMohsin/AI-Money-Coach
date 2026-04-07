@@ -37,9 +37,9 @@ Just open index.html in your favorite browser.
 ## 👤 Author
 Developed by Sayyed Mohsin Ali
 
-GitHub: @SayyedMohsin
+GitHub:(https://github.com/SayyedMohsin)
 
-LinkedIn:www.linkedin.com/in/sayyed-mohsin-ali-63b8032b2
+LinkedIn: www.linkedin.com/in/sayyed-mohsin-ali-63b8032b2
 
 
 ## 📄 License
