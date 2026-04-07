@@ -15,13 +15,12 @@
         .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: #f8fafc; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; overflow: hidden; }
         .content-area { flex: 1; overflow-y: auto; padding-bottom: 120px; scroll-behavior: smooth; }
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
         .nav-bar { position: absolute; bottom: 0; width: 100%; height: 70px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; align-items: center; z-index: 50; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; cursor: pointer; font-size: 0.7rem; width: 25%; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; cursor: pointer; font-size: 0.7rem; font-weight: 500; width: 25%; }
         .nav-item.active { color: #4f46e5; }
         .view { display: none; padding: 24px; }
-        .view.active { display: block; animation: fadeUp 0.4s ease; }
+        .view.active { display: block; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .loader { border: 2px solid #e2e8f0; border-top: 2px solid #4f46e5; border-radius: 50%; width: 18px; height: 18px; animation: spin 0.8s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -36,7 +35,7 @@
     <div class="bg-white px-6 py-5 sticky top-0 z-10 flex justify-between items-center border-b border-gray-100">
         <div class="flex items-center gap-2">
             <div class="bg-indigo-600 text-white w-8 h-8 rounded-lg flex items-center justify-center shadow-md"><i class="fa-solid fa-wallet text-sm"></i></div>
-            <h1 class="text-xl font-bold text-slate-800 tracking-tight">Money Coach</h1>
+            <h1 class="text-xl font-bold text-slate-800">Money Coach</h1>
         </div>
     </div>
 
@@ -46,66 +45,83 @@
                 <p class="text-slate-400 text-sm mb-1">Total Available Balance</p>
                 <h2 class="text-4xl font-bold mb-6" id="ui-balance">₹0</h2>
                 <div class="flex justify-between items-end">
-                    <div><p class="text-slate-400 text-xs mb-1">This Month's Expense</p><p class="font-semibold text-lg" id="ui-expense">₹0</p></div>
+                    <div><p class="text-slate-400 text-xs mb-1">Monthly Expense</p><p class="font-semibold text-lg" id="ui-expense">₹0</p></div>
                     <div class="text-right"><p class="text-slate-400 text-xs mb-1">Runway</p><p class="font-semibold text-lg text-emerald-400" id="ui-days">0 Days</p></div>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 mb-6">
+
+            <div class="bg-white p-5 rounded-3xl border mb-6">
                 <h3 class="font-bold text-slate-800 text-sm mb-4">Spending Analysis</h3>
                 <div class="relative h-48 w-full flex justify-center items-center">
                     <canvas id="expenseChart"></canvas>
-                    <div id="no-chart-data" class="absolute hidden flex-col items-center justify-center text-slate-400 text-xs">
+                    <div id="no-chart-data" class="absolute hidden flex-col items-center text-slate-400 text-xs">
                         <i class="fa-solid fa-chart-pie text-3xl mb-2 opacity-30"></i><p>No data</p>
                     </div>
                 </div>
             </div>
-            <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-slate-800 text-lg">Recent Transactions</h3></div>
-            <div id="recent-transactions" class="space-y-3"><div class="flex justify-center py-6"><div class="loader"></div></div></div>
+
+            <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-slate-800 text-lg">Recent</h3><button onclick="switchTab('history')" class="text-indigo-600 text-sm">See All</button></div>
+            <div id="recent-transactions" class="space-y-3"></div>
         </div>
 
         <div id="add-view" class="view">
-            <h2 class="text-2xl font-bold text-slate-800 mb-6">Add Transaction</h2>
-            <div class="flex bg-slate-100 p-1.5 rounded-xl mb-6">
-                <button onclick="setEntryType('Expense')" id="btn-expense" class="flex-1 py-2.5 rounded-lg bg-white shadow-sm text-slate-800 font-semibold text-sm">Expense</button>
-                <button onclick="setEntryType('Income')" id="btn-income" class="flex-1 py-2.5 rounded-lg text-slate-500 font-medium text-sm">Income</button>
+            <h2 class="text-2xl font-bold mb-6">Add Entry</h2>
+            <div class="flex bg-slate-100 p-1 rounded-xl mb-6">
+                <button onclick="setEntryType('Expense')" id="btn-expense" class="flex-1 py-2 rounded-lg bg-white shadow-sm font-semibold">Expense</button>
+                <button onclick="setEntryType('Income')" id="btn-income" class="flex-1 py-2 rounded-lg text-slate-500">Income</button>
             </div>
-            <div class="space-y-5">
-                <input type="date" id="input-date" class="premium-input text-slate-800">
-                <select id="input-category" class="premium-input text-slate-800"><option>Food & Dining</option><option>Transport</option></select>
-                <input type="number" id="input-amount" placeholder="Amount ₹" class="premium-input font-semibold text-slate-800">
-                <input type="text" id="input-note" placeholder="Note (Optional)" class="premium-input text-slate-800">
-                <button onclick="addTransaction()" id="save-btn" class="w-full bg-indigo-600 text-white font-semibold py-4 rounded-xl shadow-lg mt-6">Save Transaction</button>
+            <div class="space-y-4">
+                <input type="date" id="input-date" class="premium-input">
+                <select id="input-category" class="premium-input"></select>
+                <input type="number" id="input-amount" placeholder="Amount ₹" class="premium-input">
+                <input type="text" id="input-note" placeholder="Note (Optional)" class="premium-input">
+                <button onclick="addTransaction()" id="save-btn" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg">Save Transaction</button>
             </div>
         </div>
 
         <div id="chat-view" class="view flex-col h-full">
-            <div id="chat-box" class="bg-white border rounded-2xl p-4 h-[55vh] overflow-y-auto mb-4 space-y-4 shadow-sm"></div>
-            <div class="flex gap-2"><input type="text" id="chat-input" placeholder="Ask AI..." class="flex-1 border rounded-full px-5 py-3 text-sm outline-none"><button onclick="sendChat()" class="bg-indigo-600 text-white w-12 h-12 rounded-full flex justify-center items-center"><i class="fa-solid fa-paper-plane"></i></button></div>
+            <div id="chat-box" class="bg-white border rounded-2xl p-4 h-[55vh] overflow-y-auto mb-4 space-y-4"></div>
+            <div class="flex gap-2"><input type="text" id="chat-input" placeholder="Mera kharcha kitna hai?" class="flex-1 border rounded-full px-5 py-3 text-sm"><button onclick="sendChat()" class="bg-indigo-600 text-white w-12 h-12 rounded-full flex items-center justify-center"><i class="fa-solid fa-paper-plane"></i></button></div>
         </div>
 
         <div id="history-view" class="view">
-            <h2 class="text-2xl font-bold text-slate-800 mb-6">History</h2>
+            <h2 class="text-2xl font-bold mb-6">History</h2>
             <div class="flex gap-3 mb-6">
-                <button onclick="viewInvoice()" class="flex-1 bg-indigo-50 text-indigo-600 py-2.5 rounded-xl font-semibold text-sm">Invoice</button>
-                <button onclick="clearDatabase()" class="flex-1 bg-red-50 text-red-600 py-2.5 rounded-xl font-semibold text-sm">Clear</button>
+                <button onclick="viewInvoice()" class="flex-1 bg-indigo-50 text-indigo-600 py-2 rounded-xl font-bold">Month Invoice</button>
+                <button onclick="clearDatabase()" class="flex-1 bg-red-50 text-red-600 py-2 rounded-xl font-bold">Clear All</button>
             </div>
-            <div id="all-transactions" class="space-y-3"></div>
+            <div id="all-transactions" class="space-y-3 pb-8"></div>
         </div>
     </div>
 
     <div class="nav-bar">
         <div class="nav-item active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
-        <div class="nav-item" onclick="switchTab('add')"><i class="fa-solid fa-circle-plus"></i><span>Add</span></div>
+        <div class="nav-item" onclick="switchTab('add')"><i class="fa-solid fa-plus"></i><span>Add</span></div>
         <div class="nav-item" onclick="switchTab('history')"><i class="fa-solid fa-list"></i><span>History</span></div>
         <div class="nav-item" onclick="switchTab('chat')"><i class="fa-solid fa-sparkles"></i><span>AI Coach</span></div>
+    </div>
+
+    <div id="invoice-modal" class="modal">
+        <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="bg-indigo-600 p-4 text-white flex justify-between items-center">
+                <h3 class="font-bold">Monthly Invoice</h3>
+                <button onclick="closeInvoice()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-4 border-b"><input type="month" id="invoice-month-picker" class="border p-2 rounded w-full" onchange="changeInvoiceMonth()"></div>
+            <div class="p-6 overflow-y-auto flex-1 bg-white" id="invoice-content-print">
+                <div id="invoice-content"></div>
+            </div>
+            <div class="p-4 bg-slate-50 flex gap-2">
+                <button onclick="downloadCSV()" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs font-bold">Excel</button>
+                <button onclick="downloadPDF()" class="flex-1 bg-red-600 text-white py-2 rounded-xl text-xs font-bold">PDF</button>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    // 1. AAPKA RENDER URL (Check karke sahi dalein)
+    // URL AUR SESSION SETTINGS
     const API_URL = "https://ai-money-coach.onrender.com"; 
-    
-    // 2. SESSION LOGIC (Iske bina Backend connect nahi hoga)
     let sessionId = localStorage.getItem('moneycoach_session_id');
     if (!sessionId) {
         sessionId = 'user_' + Math.random().toString(36).substr(2, 9);
@@ -113,14 +129,12 @@
     }
 
     function getHeaders() {
-        return { 
-            "Content-Type": "application/json",
-            "X-Session-ID": sessionId 
-        };
+        return { "Content-Type": "application/json", "X-Session-ID": sessionId };
     }
 
     let currentEntryType = "Expense";
     let expenseChartInstance = null;
+    let currentReportMonth = "";
     document.getElementById('input-date').valueAsDate = new Date();
 
     function switchTab(tabName) {
@@ -137,14 +151,13 @@
         const btnExp = document.getElementById('btn-expense');
         const btnInc = document.getElementById('btn-income');
         const catSelect = document.getElementById('input-category');
-        btnExp.className = "flex-1 py-2.5 rounded-lg font-medium text-sm text-slate-500";
-        btnInc.className = "flex-1 py-2.5 rounded-lg font-medium text-sm text-slate-500";
+        btnExp.className = btnInc.className = "flex-1 py-2 rounded-lg text-slate-500 font-medium";
         if(type === 'Expense') {
-            btnExp.className = "flex-1 py-2.5 rounded-lg bg-white shadow-sm text-slate-800 font-semibold text-sm";
-            catSelect.innerHTML = `<option>Food & Dining</option><option>Transport</option><option>Rent</option><option>Others</option>`;
+            btnExp.className = "flex-1 py-2 rounded-lg bg-white shadow-sm text-slate-800 font-bold";
+            catSelect.innerHTML = `<option>Food & Dining</option><option>Groceries</option><option>Transport & Fuel</option><option>Shopping</option><option>Rent</option><option>Bills</option><option>Health</option><option>SIP/Investments</option><option>Others</option>`;
         } else {
-            btnInc.className = "flex-1 py-2.5 rounded-lg bg-white shadow-sm text-slate-800 font-semibold text-sm";
-            catSelect.innerHTML = `<option>Salary</option><option>Freelance</option><option>Pocket Money</option>`;
+            btnInc.className = "flex-1 py-2 rounded-lg bg-white shadow-sm text-slate-800 font-bold";
+            catSelect.innerHTML = `<option>Salary</option><option>Freelance</option><option>Pocket Money</option><option>Investments</option><option>Others</option>`;
         }
     }
 
@@ -167,58 +180,38 @@
             const container = document.getElementById(onlyRecent ? 'recent-transactions' : 'all-transactions');
             container.innerHTML = '';
             const items = onlyRecent ? data.slice(0, 4) : data;
+            if(!items.length) { container.innerHTML = `<p class="text-center text-slate-400 text-sm py-4">No data available</p>`; return; }
             items.forEach(t => {
                 const isExp = t.type === 'Expense';
-                container.innerHTML += `<div class="bg-white p-4 rounded-2xl flex justify-between shadow-sm"><div><p class="font-bold text-sm">${t.category}</p><p class="text-xs text-slate-400">${t.date}</p></div><p class="font-bold ${isExp ? 'text-slate-800' : 'text-emerald-600'}">${isExp?'-':'+'}₹${t.amount}</p></div>`;
+                container.innerHTML += `<div class="bg-white p-4 rounded-2xl flex justify-between shadow-sm border border-slate-50"><div><p class="font-bold text-sm">${t.category}</p><p class="text-[10px] text-slate-400">${t.date}</p></div><p class="font-bold ${isExp?'text-slate-800':'text-emerald-600'}">${isExp?'-':'+'}₹${t.amount}</p></div>`;
             });
         } catch (e) {}
     }
 
     async function addTransaction() {
-        const date = document.getElementById('input-date').value;
-        const category = document.getElementById('input-category').value;
-        const amount = document.getElementById('input-amount').value;
-        const note = document.getElementById('input-note').value;
-
-        if(!amount || amount <= 0) return alert("Sahi amount dalein!");
-
-        const payload = { type: currentEntryType, category, amount: parseFloat(amount), note, date };
+        const payload = { 
+            type: currentEntryType, 
+            category: document.getElementById('input-category').value, 
+            amount: parseFloat(document.getElementById('input-amount').value), 
+            note: document.getElementById('input-note').value, 
+            date: document.getElementById('input-date').value 
+        };
+        if(!payload.amount) return alert("Amount likhein!");
         const btn = document.getElementById('save-btn');
         btn.innerHTML = 'Saving...';
-
         try {
-            const res = await fetch(`${API_URL}/transactions`, { 
-                method: "POST", 
-                headers: getHeaders(), // <--- Headers fixed
-                body: JSON.stringify(payload) 
-            });
+            const res = await fetch(`${API_URL}/transactions`, { method: "POST", headers: getHeaders(), body: JSON.stringify(payload) });
             if(res.ok) {
                 document.getElementById('input-amount').value = '';
                 document.getElementById('input-note').value = '';
                 switchTab('home');
-            } else { alert("Error adding transaction"); }
-        } catch (e) { alert("Backend connect nahi ho raha."); }
+            }
+        } catch (e) { alert("Error connecting to backend"); }
         btn.innerHTML = 'Save Transaction';
     }
 
-    async function sendChat() {
-        const input = document.getElementById('chat-input');
-        const question = input.value.trim();
-        if(!question) return;
-        const chatBox = document.getElementById('chat-box');
-        chatBox.innerHTML += `<div class="text-right"><span class="bg-indigo-600 text-white p-3 rounded-xl inline-block text-sm">${question}</span></div>`;
-        input.value = '';
-        try {
-            const res = await fetch(`${API_URL}/chat`, { method: "POST", headers: getHeaders(), body: JSON.stringify({ question }) });
-            const data = await res.json();
-            chatBox.innerHTML += `<div class="text-left"><span class="bg-slate-100 p-3 rounded-xl inline-block text-sm text-slate-700">${data.reply}</span></div>`;
-        } catch (e) { chatBox.innerHTML += `<div class="text-red-500 text-xs">Error connecting to AI</div>`; }
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
     async function renderChart() {
-        const today = new Date();
-        const month = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+        const month = new Date().toISOString().slice(0, 7);
         try {
             const res = await fetch(`${API_URL}/monthly-report/${month}`, { headers: getHeaders() });
             const data = await res.json();
@@ -230,21 +223,65 @@
                 type: 'doughnut',
                 data: {
                     labels: data.category_breakdown.map(i => i.category),
-                    datasets: [{ data: data.category_breakdown.map(i => i.total), backgroundColor: ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b'] }]
+                    datasets: [{ data: data.category_breakdown.map(i => i.total), backgroundColor: ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#f43f5e'] }]
                 },
-                options: { cutout: '75%', plugins: { legend: { position: 'right' } } }
+                options: { cutout: '75%', plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } } } }
             });
         } catch (e) {}
     }
 
-    async function clearDatabase() {
-        if(confirm("Delete all data?")) {
-            await fetch(`${API_URL}/clear-db`, { method: 'DELETE', headers: getHeaders() });
-            fetchData();
-        }
+    async function sendChat() {
+        const input = document.getElementById('chat-input');
+        const question = input.value.trim();
+        if(!question) return;
+        const chatBox = document.getElementById('chat-box');
+        chatBox.innerHTML += `<div class="text-right"><span class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tr-sm inline-block text-sm shadow-sm">${question}</span></div>`;
+        input.value = '';
+        try {
+            const res = await fetch(`${API_URL}/chat`, { method: "POST", headers: getHeaders(), body: JSON.stringify({ question }) });
+            const data = await res.json();
+            chatBox.innerHTML += `<div class="text-left"><span class="bg-slate-100 p-3 rounded-2xl rounded-tl-sm inline-block text-sm text-slate-700 border border-slate-200">${data.reply}</span></div>`;
+        } catch (e) { chatBox.innerHTML += `<div class="text-red-500 text-xs">Network Error</div>`; }
+        chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    window.onload = fetchData;
+    async function viewInvoice(monthStr = null) {
+        const modal = document.getElementById('invoice-modal');
+        const content = document.getElementById('invoice-content');
+        modal.classList.add('active');
+        currentReportMonth = monthStr || new Date().toISOString().slice(0, 7);
+        document.getElementById('invoice-month-picker').value = currentReportMonth;
+        content.innerHTML = `<div class="flex justify-center py-4"><div class="loader"></div></div>`;
+        try {
+            const res = await fetch(`${API_URL}/monthly-report/${currentReportMonth}`, { headers: getHeaders() });
+            const data = await res.json();
+            let html = `
+                <div class="text-center mb-6"><h2 class="text-xl font-bold">Money Coach</h2><p class="text-xs text-slate-400">Month: ${data.month}</p></div>
+                <div class="flex justify-between bg-slate-50 p-4 rounded-xl mb-6 border">
+                    <div><p class="text-[10px] font-bold text-slate-400 uppercase">Income</p><p class="font-bold text-emerald-600">₹${data.total_income}</p></div>
+                    <div class="text-right"><p class="text-[10px] font-bold text-slate-400 uppercase">Expense</p><p class="font-bold text-red-500">₹${data.total_expense}</p></div>
+                </div>
+                <h5 class="font-bold text-xs mb-2 border-b pb-1">Details</h5>
+                <table class="w-full text-xs">
+                    <tbody class="divide-y">`;
+            data.transactions.forEach(t => {
+                const isExp = t.type === 'Expense';
+                html += `<tr><td class="py-2 text-slate-400">${t.date}</td><td class="py-2 font-medium">${t.category}</td><td class="py-2 font-bold text-right ${isExp?'text-slate-800':'text-emerald-600'}">${isExp?'-':'+'}₹${t.amount}</td></tr>`;
+            });
+            html += `</tbody></table><div class="border-t pt-4 mt-6 text-center text-[10px] text-slate-400">Net Savings: ₹${data.total_income - data.total_expense}<br>Developed by @ Sayyed Mohsin Ali</div>`;
+            content.innerHTML = html;
+        } catch (e) { content.innerHTML = "Failed to load"; }
+    }
+
+    function changeInvoiceMonth() { viewInvoice(document.getElementById('invoice-month-picker').value); }
+    function closeInvoice() { document.getElementById('invoice-modal').classList.remove('active'); }
+    function downloadCSV() { window.location.href = `${API_URL}/download-csv/${currentReportMonth}?x_session_id=${sessionId}`; }
+    function downloadPDF() {
+        const element = document.getElementById('invoice-content-print');
+        html2pdf().set({ margin: 0.5, filename: `Invoice_${currentReportMonth}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } }).from(element).save();
+    }
+
+    window.onload = () => { setEntryType('Expense'); fetchData(); };
 </script>
 </body>
 </html>
