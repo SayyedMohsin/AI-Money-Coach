@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Wallet - Professional Edition</title>
+    <title>AI Money Coach - Neo Banking Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,43 +12,49 @@
     
     <style>
         :root {
-            --primary: #67a38a;
-            --secondary: #febd41;
-            --bg-light: #f8faf9;
-            --text-main: #2d3748;
+            /* Neo-Banking Color Scheme */
+            --primary: #4f46e5;      /* Deep Indigo */
+            --primary-dark: #3730a3; /* Darker Indigo */
+            --accent: #f97316;       /* Vibrant Orange */
+            --success: #10b981;      /* Mint Green */
+            --danger: #f43f5e;       /* Rose Red */
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
         }
-        body { background-color: #f0f2f1; font-family: 'Quicksand', sans-serif; display: flex; justify-content: center; margin: 0; color: var(--text-main); }
+        body { background-color: #e2e8f0; font-family: 'Quicksand', sans-serif; display: flex; justify-content: center; margin: 0; color: var(--text-main); }
         .app-container { width: 100%; max-width: 414px; height: 100vh; background-color: var(--bg-light); position: relative; box-shadow: 0 40px 100px rgba(0,0,0,0.15); display: flex; flex-direction: column; overflow: hidden; }
         
-        /* Professional Header */
-        .app-header { background: var(--primary); padding: 30px 24px 45px 24px; color: white; border-radius: 0 0 40px 40px; }
+        /* Unique Professional Header */
+        .app-header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding: 25px 24px 40px 24px; color: white; border-radius: 0 0 35px 35px; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3); position: relative; z-index: 10; }
         
-        .content-area { flex: 1; overflow-y: auto; padding-bottom: 100px; margin-top: -30px; }
+        .content-area { flex: 1; overflow-y: auto; padding-bottom: 100px; margin-top: -20px; z-index: 5; }
         
         /* Navbar */
-        .nav-bar { position: absolute; bottom: 0; width: 100%; height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-top: 1px solid #edf2f0; display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 15px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #9bb0a5; cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: 0.3s; }
+        .nav-bar { position: absolute; bottom: 0; width: 100%; height: 75px; background: rgba(255,255,255,0.98); border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 10px; box-shadow: 0 -10px 20px rgba(0,0,0,0.02); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: 0.3s; }
         .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 1.5rem; margin-bottom: 4px; }
+        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; transition: 0.2s; }
+        .nav-item.active i { transform: translateY(-2px); }
 
-        /* Floating Add Button - Perfected */
-        .fab-button { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); width: 65px; height: 65px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; box-shadow: 0 10px 25px rgba(254, 189, 65, 0.4); z-index: 110; border: 5px solid white; cursor: pointer; }
+        /* Floating Add Button - Distinctive */
+        .fab-button { position: absolute; left: 50%; bottom: 35px; transform: translateX(-50%); width: 60px; height: 60px; background: var(--accent); border-radius: 20px; transform-origin: center; transform: translateX(-50%) rotate(45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 25px rgba(249, 115, 22, 0.4); z-index: 110; border: 4px solid white; cursor: pointer; transition: 0.3s; }
+        .fab-button i { transform: rotate(-45deg); color: white; font-size: 1.5rem; }
+        .fab-button:active { transform: translateX(-50%) rotate(45deg) scale(0.95); }
 
         /* Views */
         .view { display: none; padding: 0 20px; animation: fadeInUp 0.4s ease; }
         .view.active { display: block; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Elements */
-        .card { background: white; border-radius: 28px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #f0f4f2; margin-bottom: 20px; }
-        .premium-input { background: #f1f5f3; border: 2px solid transparent; border-radius: 18px; padding: 18px; width: 100%; outline: none; transition: 0.3s; font-weight: 600; }
-        .premium-input:focus { border-color: var(--primary); background: white; }
+        .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; margin-bottom: 20px; }
+        .premium-input { background: #f8fafc; border: 2px solid transparent; border-radius: 16px; padding: 16px; width: 100%; outline: none; transition: 0.3s; font-weight: 600; color: var(--text-main); margin-bottom: 15px; }
+        .premium-input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
         
-        /* Modal Fix */
-        .modal-box { background: white; width: 90%; max-width: 360px; border-radius: 35px; overflow: hidden; max-height: 80vh; display: flex; flex-direction: column; }
-        .modal-body { overflow-y: auto; padding: 25px; flex: 1; }
+        .modal-box { background: var(--bg-light); width: 90%; max-width: 360px; border-radius: 30px; overflow: hidden; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        .modal-body { overflow-y: auto; padding: 0; flex: 1; }
 
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 22px; height: 22px; animation: spin 1s linear infinite; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 22px; height: 22px; animation: spin 0.8s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -56,123 +62,156 @@
 
 <div class="app-container">
     <div class="app-header">
-        <div class="flex justify-between items-center mb-6">
-            <i class="fa-solid fa-grid-2 text-xl opacity-80"></i>
-            <span class="font-bold text-sm tracking-widest uppercase">My Finance</span>
-            <i class="fa-solid fa-circle-user text-2xl opacity-80"></i>
+        <div class="flex justify-between items-center mb-5">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"><i class="fa-solid fa-wallet text-sm"></i></div>
+                <span class="font-bold tracking-widest uppercase text-xs opacity-90">Money Coach</span>
+            </div>
+            <i class="fa-regular fa-bell text-lg opacity-90"></i>
         </div>
         <div class="text-center">
-            <p class="text-[10px] font-bold uppercase opacity-70 mb-1">Total Savings</p>
+            <p class="text-[10px] font-bold uppercase opacity-70 mb-1 tracking-wider">Total Balance</p>
             <h1 id="top-balance" class="text-4xl font-bold tracking-tight">₹0</h1>
         </div>
     </div>
 
     <div class="content-area" id="content-area">
         <div id="home-view" class="view active">
-            <div class="card flex flex-col items-center">
-                <div class="relative h-48 w-48 mb-4">
+            <div class="card flex flex-col items-center relative z-10">
+                <div class="w-full flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-sm text-slate-500 uppercase">Analytics</h3>
+                    <span class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-3 py-1 rounded-full">This Month</span>
+                </div>
+                
+                <div class="relative h-44 w-44 mb-4">
                     <canvas id="expenseChart"></canvas>
                     <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                         <span class="text-[10px] font-bold text-slate-400 uppercase">Spent</span>
-                        <span id="ui-expense" class="text-xl font-bold">₹0</span>
+                        <span id="ui-expense" class="text-xl font-bold text-slate-800">₹0</span>
                     </div>
                 </div>
-                <div class="flex justify-around w-full mt-2 border-t pt-4 border-slate-50">
-                    <div class="text-center border-r w-1/2">
-                        <p class="text-[9px] font-bold text-slate-400 uppercase">Income</p>
-                        <p id="ui-income-total" class="text-emerald-500 font-bold">₹0</p>
+                
+                <div class="flex justify-between w-full mt-2 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                    <div class="text-center w-1/2 border-r border-slate-200">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Income</p>
+                        <p id="ui-income-total" class="text-emerald-500 font-bold text-sm">₹0</p>
                     </div>
                     <div class="text-center w-1/2">
-                        <p class="text-[9px] font-bold text-slate-400 uppercase">Runway</p>
-                        <p id="ui-days" class="text-slate-700 font-bold">--</p>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Runway</p>
+                        <p id="ui-days" class="text-indigo-600 font-bold text-sm">--</p>
                     </div>
                 </div>
             </div>
 
-            <div class="flex justify-between items-center mb-4 px-1">
-                <h3 class="font-bold text-lg">Transactions</h3>
-                <span class="text-xs font-bold text-slate-400 uppercase">April 2026</span>
+            <div class="flex justify-between items-center mb-4 px-1 mt-2">
+                <h3 class="font-bold text-lg text-slate-800">Recent Activity</h3>
+                <button onclick="switchTab('history')" class="text-xs font-bold text-indigo-600">See All</button>
             </div>
-            <div id="recent-transactions" class="space-y-4"></div>
+            <div id="recent-transactions" class="space-y-3"></div>
         </div>
 
         <div id="add-view" class="view">
-            <div class="card mt-4">
-                <h2 class="text-center font-bold text-lg mb-6">New Entry</h2>
+            <div class="card mt-6">
+                <h2 class="text-center font-bold text-xl mb-6 text-slate-800">New Entry</h2>
+                
                 <div class="flex bg-slate-100 p-1.5 rounded-2xl mb-6">
-                    <button onclick="setEntryType('Expense')" id="btn-expense" class="flex-1 py-3 rounded-xl bg-white shadow-sm font-bold text-slate-800 transition-all">Expense</button>
+                    <button onclick="setEntryType('Expense')" id="btn-expense" class="flex-1 py-3 rounded-xl bg-white shadow-sm font-bold text-indigo-600 transition-all">Expense</button>
                     <button onclick="setEntryType('Income')" id="btn-income" class="flex-1 py-3 rounded-xl text-slate-400 font-bold transition-all">Income</button>
                 </div>
-                <div class="space-y-5">
+                
+                <div class="space-y-1">
                     <input type="date" id="input-date" class="premium-input">
                     <select id="input-category" class="premium-input"></select>
+                    
                     <div class="relative">
-                        <span class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-slate-400">₹</span>
-                        <input type="number" id="input-amount" placeholder="0.00" class="premium-input pl-10">
+                        <span class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-lg">₹</span>
+                        <input type="number" id="input-amount" placeholder="0.00" class="premium-input pl-10 text-lg font-bold text-slate-800">
                     </div>
-                    <input type="text" id="input-note" placeholder="Note (E.g. Dinner, Rent)" class="premium-input">
-                    <button onclick="addTransaction()" id="save-btn" class="w-full py-5 bg-[#67a38a] text-white rounded-2xl font-bold shadow-lg shadow-emerald-100">Save Transaction</button>
+                    
+                    <input type="text" id="input-note" placeholder="Description (Optional)" class="premium-input">
+                    
+                    <button onclick="addTransaction()" id="save-btn" class="w-full py-4 mt-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold shadow-lg shadow-indigo-200 transition-all">
+                        Save Transaction
+                    </button>
                 </div>
             </div>
         </div>
 
         <div id="chat-view" class="view">
-            <div class="flex items-center gap-4 mb-6 mt-4">
-                <div class="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center">
-                    <i class="fa-solid fa-robot text-2xl text-[#67a38a]"></i>
-                </div>
-                <div>
-                    <h2 class="font-bold text-lg">AI Financial Coach</h2>
-                    <p class="text-xs font-bold text-emerald-500 uppercase">Always Active</p>
-                </div>
-            </div>
-            <div id="chat-box" class="h-[45vh] overflow-y-auto space-y-4 mb-6 px-1">
-                <div class="flex gap-3">
-                    <div class="bg-white border p-4 rounded-2xl rounded-tl-none text-sm leading-relaxed shadow-sm">
-                        Hello Sayyed! I understand English & Hindi. Ask me about your expenses or savings.
+            <div class="card mt-6 border-indigo-100 shadow-indigo-50 border-2">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 flex items-center justify-center">
+                        <i class="fa-solid fa-wand-magic-sparkles text-xl text-indigo-600"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg text-slate-800">AI Coach</h2>
+                        <p class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">Bilingual Support</p>
                     </div>
                 </div>
-            </div>
-            <div class="flex gap-2 bg-white p-2 rounded-full shadow-lg border">
-                <input type="text" id="chat-input" placeholder="Mera kharcha kitna hai?" class="flex-1 bg-transparent px-5 py-2 text-sm outline-none font-medium">
-                <button onclick="sendChat()" class="w-12 h-12 bg-[#67a38a] text-white rounded-full flex items-center justify-center shadow-md"><i class="fa-solid fa-paper-plane"></i></button>
+                
+                <div id="chat-box" class="h-[40vh] overflow-y-auto space-y-4 mb-4 pr-1">
+                    <div class="flex gap-3">
+                        <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-none text-sm leading-relaxed text-slate-700 font-medium">
+                            Namaste! I understand English & Hindi. Ask me about your expenses, savings, or investments.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200 focus-within:border-indigo-400 transition-all">
+                    <input type="text" id="chat-input" placeholder="Mera kharcha kitna hai?" class="flex-1 bg-transparent px-4 py-2 text-sm outline-none font-medium text-slate-800">
+                    <button onclick="sendChat()" class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center shadow-md hover:bg-indigo-700"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+                </div>
             </div>
         </div>
 
         <div id="history-view" class="view">
-            <div class="flex justify-between items-center mt-6 mb-6">
-                <h2 class="text-xl font-bold">Recent History</h2>
+            <div class="flex justify-between items-center mt-6 mb-6 px-1">
+                <h2 class="text-xl font-bold text-slate-800">History</h2>
                 <div class="flex gap-2">
-                    <button onclick="viewInvoice()" class="w-10 h-10 bg-white shadow-sm border rounded-xl text-[#67a38a]"><i class="fa-solid fa-file-pdf"></i></button>
-                    <button onclick="clearDatabase()" class="w-10 h-10 bg-white shadow-sm border rounded-xl text-red-400"><i class="fa-solid fa-trash-can"></i></button>
+                    <button onclick="viewInvoice()" class="w-10 h-10 bg-white shadow-sm border border-slate-200 rounded-xl text-indigo-600 hover:bg-indigo-50 transition-all"><i class="fa-solid fa-file-invoice text-lg"></i></button>
+                    <button onclick="clearDatabase()" class="w-10 h-10 bg-white shadow-sm border border-slate-200 rounded-xl text-rose-500 hover:bg-rose-50 transition-all"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             </div>
-            <div id="all-transactions" class="space-y-4"></div>
+            <div id="all-transactions" class="space-y-3"></div>
         </div>
     </div>
 
-    <button class="fab-button" onclick="switchTab('add')"><i class="fa-solid fa-plus"></i></button>
-
-    <div class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('home')"><i class="fa-solid fa-house-chimney"></i><span>Home</span></div>
-        <div class="nav-item" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></div>
-        <div class="nav-item opacity-0 pointer-events-none"><span></span></div>
-        <div class="nav-item" onclick="switchTab('chat')"><i class="fa-solid fa-robot"></i><span>Coach</span></div>
-        <div class="nav-item" onclick="viewInvoice()"><i class="fa-solid fa-chart-line"></i><span>Report</span></div>
+    <div class="fab-button" onclick="switchTab('add')">
+        <i class="fa-solid fa-plus"></i>
     </div>
 
-    <div id="invoice-modal" class="fixed inset-0 bg-black/60 hidden z-[200] items-center justify-center p-4">
-        <div class="modal-box shadow-2xl">
-            <div class="bg-slate-900 p-6 text-white flex justify-between items-center">
-                <span class="font-bold">Monthly Report</span>
-                <button onclick="closeInvoice()"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchTab('home')"><i class="fa-solid fa-chart-pie"></i><span>Home</span></div>
+        <div class="nav-item" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></div>
+        <div class="nav-item opacity-0 pointer-events-none"><span></span></div> <div class="nav-item" onclick="switchTab('chat')"><i class="fa-solid fa-robot"></i><span>Coach</span></div>
+        <div class="nav-item" onclick="viewInvoice()"><i class="fa-solid fa-file-invoice"></i><span>Report</span></div>
+    </div>
+
+    <div id="invoice-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-[200] items-center justify-center p-4">
+        <div class="modal-box">
+            <div class="bg-gradient-to-r from-indigo-800 to-indigo-600 p-5 text-white flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span class="font-bold tracking-widest uppercase text-xs">Monthly Report</span>
+                </div>
+                <button onclick="closeInvoice()" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30"><i class="fa-solid fa-xmark"></i></button>
             </div>
+            
+            <div class="bg-white p-3 border-b border-slate-100 flex justify-center">
+                <input type="month" id="invoice-month-picker" class="font-bold text-slate-700 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 outline-none focus:border-indigo-400" onchange="changeInvoiceMonth()">
+            </div>
+            
             <div class="modal-body" id="invoice-content-print">
-                <div id="invoice-content"></div>
+                <div id="invoice-content" class="p-5"></div>
             </div>
-            <div class="p-6 bg-slate-50 flex gap-3 border-t">
-                <button onclick="downloadCSV()" class="flex-1 py-3 bg-emerald-600 text-white rounded-xl font-bold shadow-md">CSV</button>
-                <button onclick="downloadPDF()" class="flex-1 py-3 bg-red-600 text-white rounded-xl font-bold shadow-md">PDF</button>
+            
+            <div class="p-5 bg-white border-t border-slate-100 flex gap-3">
+                <button onclick="downloadCSV()" class="flex-1 py-3.5 bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl font-bold shadow-sm hover:bg-emerald-200 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-file-csv"></i> CSV
+                </button>
+                <button onclick="downloadPDF()" class="flex-1 py-3.5 bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-bold shadow-sm hover:bg-rose-200 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-file-pdf"></i> PDF
+                </button>
             </div>
         </div>
     </div>
@@ -189,6 +228,7 @@
 
     let currentEntryType = "Expense";
     let expenseChartInstance = null;
+    let currentReportMonth = "";
     document.getElementById('input-date').valueAsDate = new Date();
 
     function switchTab(tabName) {
@@ -213,10 +253,10 @@
         const catSelect = document.getElementById('input-category');
         btnExp.className = btnInc.className = "flex-1 py-3 rounded-xl font-bold text-slate-400 transition-all";
         if(type === 'Expense') {
-            btnExp.className = "flex-1 py-3 rounded-xl bg-white shadow-sm text-slate-800 font-bold";
-            catSelect.innerHTML = `<option>Food & Dining</option><option>Groceries</option><option>Transport</option><option>Shopping</option><option>Rent</option><option>Bills</option><option>Health</option><option>SIP/Investments</option><option>Others</option>`;
+            btnExp.className = "flex-1 py-3 rounded-xl bg-white shadow-sm text-indigo-600 font-bold border border-slate-100";
+            catSelect.innerHTML = `<option>Food & Dining</option><option>Groceries & Fresh Produce</option><option>Transport & Fuel</option><option>Shopping & Lifestyle</option><option>Rent & Maintenance</option><option>Bills & Utilities</option><option>Insurance & EMI</option><option>SIP & Investments</option><option>Healthcare</option><option>Others</option>`;
         } else {
-            btnInc.className = "flex-1 py-3 rounded-xl bg-white shadow-sm text-slate-800 font-bold";
+            btnInc.className = "flex-1 py-3 rounded-xl bg-white shadow-sm text-indigo-600 font-bold border border-slate-100";
             catSelect.innerHTML = `<option>Salary</option><option>Freelance</option><option>Pocket Money</option><option>Investments</option><option>Others</option>`;
         }
     }
@@ -242,20 +282,22 @@
             container.innerHTML = '';
             const items = onlyRecent ? data.slice(0, 4) : data;
             
+            if(items.length === 0){ container.innerHTML = '<p class="text-center text-slate-400 text-sm mt-4">No entries yet.</p>'; return; }
+
             items.forEach(t => {
                 const isExp = t.type === 'Expense';
                 container.innerHTML += `
-                    <div class="flex items-center justify-between p-4 bg-white rounded-3xl shadow-sm border border-slate-50">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl flex items-center justify-center ${isExp?'bg-red-50 text-red-400':'bg-emerald-50 text-emerald-400'}">
+                    <div class="flex items-center justify-between p-4 bg-white rounded-[20px] shadow-sm border border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center ${isExp?'bg-rose-50 text-rose-500':'bg-emerald-50 text-emerald-500'}">
                                 <i class="fa-solid ${isExp?'fa-arrow-up-right':'fa-arrow-down-left'}"></i>
                             </div>
                             <div>
-                                <p class="text-sm font-bold">${t.category}</p>
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">${t.date}</p>
+                                <p class="text-sm font-bold text-slate-800 leading-tight">${t.category}</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-0.5">${t.date} ${t.note ? '• '+t.note : ''}</p>
                             </div>
                         </div>
-                        <p class="font-bold ${isExp?'text-slate-700':'text-emerald-500'}">${isExp?'-':'+'}₹${t.amount.toLocaleString('en-IN')}</p>
+                        <p class="font-bold ${isExp?'text-slate-800':'text-emerald-500'}">${isExp?'-':'+'}₹${t.amount.toLocaleString('en-IN')}</p>
                     </div>`;
             });
         } catch (e) {}
@@ -271,7 +313,7 @@
         };
         if(!payload.amount) return alert("Enter amount!");
         const btn = document.getElementById('save-btn');
-        btn.innerHTML = '<div class="loader mx-auto"></div>';
+        btn.innerHTML = '<div class="loader mx-auto !border-t-white"></div>';
         try {
             await fetch(`${API_URL}/transactions`, { method: "POST", headers: getHeaders(), body: JSON.stringify(payload) });
             await fetchData();
@@ -293,11 +335,11 @@
                 data: {
                     datasets: [{ 
                         data: data.category_breakdown.length ? data.category_breakdown.map(i => i.total) : [1], 
-                        backgroundColor: ['#fd5c63', '#febd41', '#3498db', '#2ecc71', '#9b59b6'],
-                        borderWidth: 8, borderColor: '#ffffff'
+                        backgroundColor: ['#4f46e5', '#10b981', '#f97316', '#f43f5e', '#8b5cf6', '#0ea5e9'],
+                        borderWidth: 6, borderColor: '#ffffff'
                     }]
                 },
-                options: { cutout: '85%', plugins: { legend: { display: false } } }
+                options: { cutout: '75%', plugins: { legend: { display: false }, tooltip: { enabled: data.category_breakdown.length > 0 } } }
             });
         } catch (e) {}
     }
@@ -307,12 +349,13 @@
         const question = input.value.trim();
         if(!question) return;
         const chatBox = document.getElementById('chat-box');
-        chatBox.innerHTML += `<div class="flex justify-end"><div class="bg-slate-700 text-white p-4 rounded-2xl rounded-tr-none text-sm shadow-md">${question}</div></div>`;
+        chatBox.innerHTML += `<div class="flex justify-end"><div class="bg-indigo-600 text-white p-3 px-4 rounded-2xl rounded-tr-none text-sm shadow-sm font-medium">${question}</div></div>`;
         input.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
         try {
             const res = await fetch(`${API_URL}/chat`, { method: "POST", headers: getHeaders(), body: JSON.stringify({ question }) });
             const data = await res.json();
-            chatBox.innerHTML += `<div class="flex justify-start"><div class="bg-white border p-4 rounded-2xl rounded-tl-none text-sm shadow-sm leading-relaxed">${data.reply}</div></div>`;
+            chatBox.innerHTML += `<div class="flex justify-start"><div class="bg-slate-50 border border-slate-100 p-3 px-4 rounded-2xl rounded-tl-none text-sm shadow-sm leading-relaxed text-slate-700 font-medium">${data.reply}</div></div>`;
         } catch (e) {}
         chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -322,21 +365,83 @@
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         const month = new Date().toISOString().slice(0, 7);
-        const res = await fetch(`${API_URL}/monthly-report/${month}`, { headers: getHeaders() });
-        const data = await res.json();
-        let html = `<div class="text-center mb-6"><h3 class="text-xl font-bold">Summary</h3><p class="text-[10px] font-bold text-slate-400 uppercase">${month}</p></div>`;
-        html += `<div class="bg-slate-900 text-white p-5 rounded-3xl flex justify-between mb-8 shadow-xl"><div><p class="text-[9px] uppercase font-bold text-slate-400">Income</p><p class="text-emerald-400 font-bold">₹${data.total_income}</p></div><div><p class="text-[9px] uppercase font-bold text-slate-400">Spent</p><p class="text-orange-400 font-bold">₹${data.total_expense}</p></div></div>`;
-        html += `<table class="w-full text-sm"><tbody>`;
-        data.transactions.forEach(t => {
-            html += `<tr class="border-b border-slate-50"><td class="py-3 text-xs text-slate-400 font-bold">${t.date}</td><td class="py-3 font-bold">${t.category}</td><td class="py-3 text-right font-bold">₹${t.amount}</td></tr>`;
-        });
-        html += `</tbody></table><p class="text-center text-[10px] font-bold text-slate-300 mt-10">Developed by Sayyed Mohsin Ali</p>`;
-        document.getElementById('invoice-content').innerHTML = html;
+        currentReportMonth = month;
+        document.getElementById('invoice-month-picker').value = month;
+        loadInvoiceData(month);
+    }
+
+    function changeInvoiceMonth() {
+        currentReportMonth = document.getElementById('invoice-month-picker').value;
+        loadInvoiceData(currentReportMonth);
+    }
+
+    async function loadInvoiceData(month) {
+        document.getElementById('invoice-content').innerHTML = `<div class="flex justify-center py-10"><div class="loader"></div></div>`;
+        try {
+            const res = await fetch(`${API_URL}/monthly-report/${month}`, { headers: getHeaders() });
+            const data = await res.json();
+            
+            // Designed exactly like Home Screen Cards
+            let html = `
+                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex justify-between mb-5">
+                    <div class="text-center w-1/2 border-r border-slate-200">
+                        <p class="text-[9px] uppercase font-bold text-slate-400 tracking-widest">Income</p>
+                        <p class="text-emerald-500 font-bold text-lg">₹${data.total_income.toLocaleString('en-IN')}</p>
+                    </div>
+                    <div class="text-center w-1/2">
+                        <p class="text-[9px] uppercase font-bold text-slate-400 tracking-widest">Expense</p>
+                        <p class="text-rose-500 font-bold text-lg">₹${data.total_expense.toLocaleString('en-IN')}</p>
+                    </div>
+                </div>
+                
+                <h4 class="font-bold text-sm text-slate-800 mb-3 border-b pb-2">Itemized Details</h4>
+                <div class="space-y-2">
+            `;
+            
+            if(data.transactions.length === 0){
+                html += `<p class="text-center text-xs text-slate-400 py-4">No data for this month.</p>`;
+            }
+
+            data.transactions.forEach(t => {
+                const isExp = t.type === 'Expense';
+                html += `
+                    <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-slate-100">
+                        <div>
+                            <p class="text-xs font-bold text-slate-800">${t.category}</p>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">${t.date}</p>
+                        </div>
+                        <p class="font-bold text-sm ${isExp?'text-slate-800':'text-emerald-500'}">${isExp?'-':'+'}₹${t.amount.toLocaleString('en-IN')}</p>
+                    </div>
+                `;
+            });
+            html += `</div><p class="text-center text-[10px] font-bold text-slate-300 mt-6 pt-4 border-t uppercase tracking-widest">AI Money Coach Report</p>`;
+            document.getElementById('invoice-content').innerHTML = html;
+        } catch (e) {
+            document.getElementById('invoice-content').innerHTML = `<p class="text-center text-rose-500 text-xs py-4">Error loading data.</p>`;
+        }
     }
 
     function closeInvoice() { document.getElementById('invoice-modal').classList.add('hidden'); }
-    function downloadCSV() { window.location.href = `${API_URL}/download-csv/${new Date().toISOString().slice(0, 7)}?x_session_id=${sessionId}`; }
-    function downloadPDF() { html2pdf().from(document.getElementById('invoice-content')).save(); }
+    
+    // NAYA: CSV Download Fix with Fetch API
+    async function downloadCSV() { 
+        if(!currentReportMonth) return;
+        try {
+            const response = await fetch(`${API_URL}/download-csv/${currentReportMonth}`, { headers: getHeaders() });
+            if(!response.ok) throw new Error("Network response was not ok");
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `Report_${currentReportMonth}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } catch (error) { alert("CSV Download failed."); }
+    }
+    
+    function downloadPDF() { html2pdf().set({ margin: 0.2, filename: `Report_${currentReportMonth}.pdf`, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(document.getElementById('invoice-content')).save(); }
 
     window.onload = () => { setEntryType('Expense'); fetchData(); };
 </script>
