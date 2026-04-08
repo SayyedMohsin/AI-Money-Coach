@@ -3,258 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Money Coach Pro - Exclusive Edition</title>
+    <title>Money Coach - Simple & Perfect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
+        /* ARIAL FONT AS REQUESTED */
         body { 
-            background-color: #0f172a; 
-            display: flex; 
-            justify-content: center; 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
+            font-family: Arial, sans-serif; 
+            background-color: #f1f3f4; 
             margin: 0; 
-            color: #f8fafc;
+            display: flex; 
+            justify-content: center;
         }
+        
         .app-container { 
             width: 100%; 
             max-width: 414px; 
             height: 100vh; 
-            background: #ffffff; 
+            background-color: #ffffff; 
             position: relative; 
             display: flex; 
             flex-direction: column; 
-            overflow: hidden; 
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
+
         .content-area { 
             flex: 1; 
             overflow-y: auto; 
-            padding-bottom: 100px; 
-            background: #f8fafc;
+            padding-bottom: 90px;
         }
 
-        /* Credit Card Style Balance Card */
-        .credit-card {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-radius: 28px;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-        .credit-card::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 250px;
-            height: 250px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 50%;
+        /* GPAY STYLE TABS */
+        .view { display: none; padding: 20px; }
+        .view.active { display: block; }
+
+        /* GPAY STYLE BUTTONS */
+        .gpay-btn {
+            background-color: #1a73e8;
+            color: white;
+            padding: 16px;
+            border-radius: 24px;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
         }
 
-        /* View Management */
-        .view { display: none; padding: 24px; min-height: 100%; }
-        .view.active { display: block; animation: viewFade 0.5s ease forwards; }
-        @keyframes viewFade {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Premium Navigation */
+        /* NAVIGATION BAR */
         .nav-bar {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 85px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            height: 70px;
+            background: #ffffff;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            border-top: 1px solid #f1f5f9;
+            border-top: 1px solid #dadce0;
             z-index: 100;
         }
+
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #94a3b8;
+            color: #5f6368;
+            font-size: 12px;
             cursor: pointer;
-            transition: 0.3s;
+            width: 25%;
         }
-        .nav-item.active { color: #0f172a; }
-        .nav-item i { font-size: 1.4rem; margin-bottom: 5px; }
-        .nav-item span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* Form Styling */
-        .input-group { margin-bottom: 20px; }
-        .input-label { font-size: 0.75rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 8px; display: block; }
-        .modern-input {
-            width: 100%;
-            background: #f1f5f9;
-            border: 2px solid transparent;
-            border-radius: 18px;
-            padding: 16px 20px;
-            font-weight: 600;
-            color: #1e293b;
-            transition: 0.3s;
-        }
-        .modern-input:focus { border-color: #0f172a; background: #fff; outline: none; }
+        .nav-item.active { color: #1a73e8; font-weight: bold; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
 
-        .btn-primary {
-            background: #0f172a;
-            color: white;
+        /* INPUTS */
+        .g-input {
             width: 100%;
-            padding: 20px;
-            border-radius: 20px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
-            transition: 0.3s;
+            padding: 14px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            outline: none;
         }
-        .btn-primary:active { transform: scale(0.96); }
+        .g-input:focus { border: 2px solid #1a73e8; }
+
+        /* CHAT BUBBLES */
+        .chat-user { background-color: #e8f0fe; color: #1967d2; align-self: flex-end; border-radius: 16px 16px 0 16px; }
+        .chat-ai { background-color: #f1f3f4; color: #3c4043; align-self: flex-start; border-radius: 16px 16px 16px 0; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <header class="px-6 py-5 bg-white flex justify-between items-center z-50">
-        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">MONEY COACH <span class="text-indigo-600">PRO</span></h1>
-        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-            <i class="fa-solid fa-user text-slate-400"></i>
-        </div>
-    </header>
+    <div class="px-6 py-4 flex justify-between items-center border-b">
+        <span class="text-xl font-bold text-gray-800">Money Coach</span>
+        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">M</div>
+    </div>
 
     <div class="content-area" id="content-area">
         
         <div id="home-view" class="view active">
-            <div class="credit-card mb-8">
-                <div class="flex justify-between items-start mb-10">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" class="h-4 opacity-50">
-                    <i class="fa-solid fa-microchip text-3xl text-yellow-500/50"></i>
-                </div>
-                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Total Balance</p>
-                <h2 class="text-4xl font-bold text-white mb-8" id="ui-balance">₹0.00</h2>
-                <div class="flex justify-between">
-                    <div>
-                        <p class="text-slate-500 text-[9px] uppercase font-black">Monthly Spent</p>
-                        <p class="text-white font-bold" id="ui-expense">₹0</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-slate-500 text-[9px] uppercase font-black">Runway</p>
-                        <p class="text-emerald-400 font-bold" id="ui-days">SAFE</p>
-                    </div>
+            <div class="bg-blue-600 rounded-3xl p-6 text-white mb-6 shadow-md">
+                <p class="text-xs opacity-80 uppercase tracking-wider mb-1">Current Balance</p>
+                <h2 class="text-3xl font-bold mb-4" id="ui-balance">₹0</h2>
+                <div class="flex justify-between text-sm">
+                    <span>Expenses: <b id="ui-expense">₹0</b></span>
+                    <span>Runway: <b id="ui-days">SAFE</b></span>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-[28px] border border-slate-100 shadow-sm mb-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-black text-slate-800 text-xs uppercase tracking-widest">Spending Analytics</h3>
-                    <i class="fa-solid fa-arrow-trend-down text-indigo-600"></i>
-                </div>
-                <div class="relative h-48">
+            <div class="bg-white p-4 rounded-xl border mb-6 shadow-sm">
+                <p class="text-xs font-bold text-gray-500 mb-4 uppercase">Analytics</p>
+                <div class="h-40 w-full">
                     <canvas id="expenseChart"></canvas>
                 </div>
             </div>
 
-            <div class="flex justify-between items-center mb-5">
-                <h3 class="font-black text-slate-800 text-xs uppercase tracking-widest">Recent Transactions</h3>
-                <button onclick="switchTab('history')" class="text-indigo-600 font-bold text-xs">VIEW ALL</button>
-            </div>
-            <div id="recent-transactions" class="space-y-4"></div>
+            <p class="text-xs font-bold text-gray-500 mb-3 uppercase">Recent Activity</p>
+            <div id="recent-transactions" class="space-y-3"></div>
         </div>
 
         <div id="add-view" class="view">
-            <h2 class="text-3xl font-black text-slate-900 mb-8 tracking-tight">New Transaction</h2>
-            
-            <div class="flex bg-slate-100 p-1.5 rounded-2xl mb-8">
-                <button onclick="setEntryType('Expense')" id="btn-expense" class="flex-1 py-4 rounded-xl bg-white shadow-sm font-bold text-slate-900">EXPENSE</button>
-                <button onclick="setEntryType('Income')" id="btn-income" class="flex-1 py-4 rounded-xl font-bold text-slate-400">INCOME</button>
+            <h2 class="text-xl font-bold mb-6">Add Transaction</h2>
+            <div class="flex border rounded-xl overflow-hidden mb-6">
+                <button onclick="setEntryType('Expense')" id="btn-expense" class="flex-1 py-3 bg-blue-600 text-white font-bold">Expense</button>
+                <button onclick="setEntryType('Income')" id="btn-income" class="flex-1 py-3 text-gray-600 font-bold bg-gray-50">Income</button>
             </div>
 
-            <div class="input-group">
-                <label class="input-label">Date</label>
-                <input type="date" id="input-date" class="modern-input">
-            </div>
-            <div class="input-group">
-                <label class="input-label">Category</label>
-                <select id="input-category" class="modern-input"></select>
-            </div>
-            <div class="input-group">
-                <label class="input-label">Amount (INR)</label>
-                <input type="number" id="input-amount" placeholder="0.00" class="modern-input text-2xl font-black">
-            </div>
-            <div class="input-group">
-                <label class="input-label">Description</label>
-                <input type="text" id="input-note" placeholder="What was this for?" class="modern-input">
-            </div>
+            <label class="text-xs font-bold text-gray-500 uppercase ml-1">Date</label>
+            <input type="date" id="input-date" class="g-input">
             
-            <button onclick="addTransaction()" id="save-btn" class="btn-primary mt-4">Confirm Transaction</button>
-        </div>
-
-        <div id="chat-view" class="view flex flex-col" style="height: 80vh;">
-            <div class="mb-6">
-                <h2 class="text-3xl font-black text-slate-900 tracking-tight">AI Advisor</h2>
-                <p class="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">English & Hindi Support</p>
-            </div>
-            <div id="chat-box" class="flex-1 bg-white border border-slate-100 rounded-[30px] p-6 overflow-y-auto mb-6 space-y-4">
-                <div class="flex gap-3">
-                    <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-robot"></i></div>
-                    <div class="bg-slate-100 p-4 rounded-2xl rounded-tl-none text-xs font-semibold text-slate-600 leading-relaxed">
-                        Hi! I am your AI Coach. I analyze your spending and give advice. Try asking "Mera kharcha kitna hai?"
-                    </div>
-                </div>
-            </div>
-            <div class="flex gap-2 bg-white p-2 rounded-full border shadow-lg mb-10">
-                <input type="text" id="chat-input" placeholder="Type message..." class="flex-1 px-5 outline-none text-sm font-bold">
-                <button onclick="sendChat()" class="bg-slate-900 text-white w-12 h-12 rounded-full flex items-center justify-center"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
+            <label class="text-xs font-bold text-gray-500 uppercase ml-1">Category</label>
+            <select id="input-category" class="g-input"></select>
+            
+            <label class="text-xs font-bold text-gray-500 uppercase ml-1">Amount (₹)</label>
+            <input type="number" id="input-amount" placeholder="0.00" class="g-input font-bold text-lg">
+            
+            <label class="text-xs font-bold text-gray-500 uppercase ml-1">Note</label>
+            <input type="text" id="input-note" placeholder="E.g. Lunch with friends" class="g-input">
+            
+            <button onclick="addTransaction()" id="save-btn" class="gpay-btn mt-4">Save to History</button>
         </div>
 
         <div id="history-view" class="view">
-            <h2 class="text-3xl font-black text-slate-900 mb-8 tracking-tight">Statement</h2>
-            <div class="grid grid-cols-2 gap-4 mb-8">
-                <button onclick="viewInvoice()" class="p-5 bg-indigo-50 rounded-3xl text-indigo-600 font-black text-xs uppercase tracking-widest text-center">
-                    <i class="fa-solid fa-file-invoice mb-2 block text-xl"></i> Invoice
-                </button>
-                <button onclick="clearDatabase()" class="p-5 bg-red-50 rounded-3xl text-red-500 font-black text-xs uppercase tracking-widest text-center">
-                    <i class="fa-solid fa-trash mb-2 block text-xl"></i> Clear
-                </button>
+            <h2 class="text-xl font-bold mb-6">Transaction History</h2>
+            <div class="flex gap-3 mb-6">
+                <button onclick="viewInvoice()" class="flex-1 py-3 border border-blue-600 text-blue-600 rounded-xl font-bold text-sm">Invoice</button>
+                <button onclick="clearDatabase()" class="flex-1 py-3 border border-red-300 text-red-500 rounded-xl font-bold text-sm">Clear All</button>
             </div>
-            <div id="all-transactions" class="space-y-4 pb-10"></div>
+            <div id="all-transactions" class="space-y-3"></div>
         </div>
+
+        <div id="chat-view" class="view flex-col h-full">
+            <h2 class="text-xl font-bold mb-1">AI Coach</h2>
+            <p class="text-xs text-gray-400 mb-4">English & Hindi Support</p>
+            
+            <div id="chat-box" class="flex-1 border-t py-4 overflow-y-auto space-y-4 flex flex-col mb-4" style="height: 50vh;">
+                <div class="chat-ai p-3 max-w-[80%] text-sm leading-relaxed">
+                    Hello! Ask me "Mera kharcha kitna hai?" or anything about your money.
+                </div>
+            </div>
+
+            <div class="flex gap-2 items-center border-t pt-4">
+                <input type="text" id="chat-input" placeholder="Ask something..." class="flex-1 p-3 outline-none text-sm bg-gray-50 rounded-full">
+                <button onclick="sendChat()" class="text-blue-600 w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-paper-plane text-xl"></i></button>
+            </div>
+        </div>
+
     </div>
 
-    <nav class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('home')"><i class="fa-solid fa-house-user"></i><span>Home</span></div>
-        <div class="nav-item" onclick="switchTab('add')"><i class="fa-solid fa-plus-circle"></i><span>Add</span></div>
-        <div class="nav-item" onclick="switchTab('history')"><i class="fa-solid fa-list-ul"></i><span>History</span></div>
-        <div class="nav-item" onclick="switchTab('chat')"><i class="fa-solid fa-brain"></i><span>AI Coach</span></div>
-    </nav>
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item" onclick="switchTab('add')"><i class="fa-solid fa-plus"></i><span>Add</span></div>
+        <div class="nav-item" onclick="switchTab('history')"><i class="fa-solid fa-receipt"></i><span>History</span></div>
+        <div class="nav-item" onclick="switchTab('chat')"><i class="fa-solid fa-comment-dots"></i><span>Coach</span></div>
+    </div>
 
-    <div id="invoice-modal" class="modal fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[200] hidden items-center justify-center p-6">
-        <div class="bg-white w-full rounded-[40px] overflow-hidden flex flex-col max-h-[90vh]">
-            <div class="p-6 bg-white border-b flex justify-between items-center">
-                <span class="font-black text-xs uppercase tracking-widest">Monthly Statement</span>
-                <button onclick="closeInvoice()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+    <div id="invoice-modal" class="fixed inset-0 bg-black/50 z-[200] hidden items-center justify-center p-4">
+        <div class="bg-white w-full rounded-2xl overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="p-4 border-b flex justify-between items-center">
+                <span class="font-bold">Monthly Invoice</span>
+                <button onclick="closeInvoice()"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto flex-1" id="invoice-content-print">
+            <div class="p-6 overflow-y-auto flex-1 bg-white" id="invoice-print-area">
                 <div id="invoice-content"></div>
             </div>
-            <div class="p-6 bg-slate-50 flex gap-3">
-                <button onclick="downloadCSV()" class="flex-1 py-4 bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase">Excel</button>
-                <button onclick="downloadPDF()" class="flex-1 py-4 bg-red-500 text-white rounded-2xl font-black text-xs uppercase">PDF</button>
+            <div class="p-4 bg-gray-50 flex gap-2">
+                <button onclick="downloadCSV()" class="flex-1 py-3 bg-green-600 text-white rounded-xl font-bold text-xs uppercase">Excel</button>
+                <button onclick="downloadPDF()" class="flex-1 py-3 bg-red-600 text-white rounded-xl font-bold text-xs uppercase">PDF</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    // URL AUR SESSION
     const API_URL = "https://ai-money-coach.onrender.com"; 
     let sessionId = localStorage.getItem('moneycoach_session_id');
     if (!sessionId) {
@@ -265,7 +215,8 @@
 
     let currentEntryType = "Expense";
     let expenseChartInstance = null;
-    let currentReportMonth = "";
+    let currentReportMonth = new Date().toISOString().slice(0, 7);
+
     document.getElementById('input-date').valueAsDate = new Date();
 
     function switchTab(tabName) {
@@ -282,13 +233,14 @@
         const btnExp = document.getElementById('btn-expense');
         const btnInc = document.getElementById('btn-income');
         const catSelect = document.getElementById('input-category');
-        btnExp.className = btnInc.className = "flex-1 py-4 rounded-xl font-bold text-slate-400";
         if(type === 'Expense') {
-            btnExp.className = "flex-1 py-4 rounded-xl bg-white shadow-sm font-bold text-slate-900";
-            catSelect.innerHTML = `<option>Food & Dining</option><option>Groceries</option><option>Transport</option><option>Shopping</option><option>Rent</option><option>Bills</option><option>Health</option><option>Investment</option><option>Others</option>`;
+            btnExp.className = "flex-1 py-3 bg-blue-600 text-white font-bold";
+            btnInc.className = "flex-1 py-3 text-gray-600 bg-gray-50 font-bold";
+            catSelect.innerHTML = `<option>Food & Dining</option><option>Transport</option><option>Shopping</option><option>Bills</option><option>Medical</option><option>Rent</option><option>Others</option>`;
         } else {
-            btnInc.className = "flex-1 py-4 rounded-xl bg-white shadow-sm font-bold text-slate-900";
-            catSelect.innerHTML = `<option>Salary</option><option>Freelance</option><option>Gifts</option><option>Others</option>`;
+            btnInc.className = "flex-1 py-3 bg-blue-600 text-white font-bold";
+            btnExp.className = "flex-1 py-3 text-gray-600 bg-gray-50 font-bold";
+            catSelect.innerHTML = `<option>Salary</option><option>Freelance</option><option>Interest</option><option>Gifts</option><option>Others</option>`;
         }
     }
 
@@ -297,7 +249,7 @@
             const res = await fetch(`${API_URL}/summary`, { headers: getHeaders() });
             const data = await res.json();
             document.getElementById('ui-balance').innerText = `₹${data.current_balance.toLocaleString('en-IN')}`;
-            document.getElementById('ui-expense').innerText = `₹${data.total_expense.toLocaleString('en-IN')}`;
+            document.getElementById('ui-expense').innerText = `₹${data.total_expense}`;
             document.getElementById('ui-days').innerText = data.avg_daily_expense > 0 ? Math.floor(data.current_balance/data.avg_daily_expense) + " DAYS" : "SAFE";
             fetchHistory(true);
             renderChart();
@@ -314,17 +266,12 @@
             items.forEach(t => {
                 const isExp = t.type === 'Expense';
                 container.innerHTML += `
-                    <div class="bg-white p-5 rounded-[24px] flex justify-between items-center border border-slate-50 shadow-sm">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl flex items-center justify-center ${isExp?'bg-slate-900 text-white':'bg-emerald-500 text-white'}">
-                                <i class="fa-solid ${isExp?'fa-minus':'fa-plus'}"></i>
-                            </div>
-                            <div>
-                                <p class="font-black text-slate-800 text-xs uppercase">${t.category}</p>
-                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">${t.date}</p>
-                            </div>
+                    <div class="flex justify-between items-center py-3 border-b border-gray-50">
+                        <div>
+                            <p class="font-bold text-gray-800 text-sm">${t.category}</p>
+                            <p class="text-[10px] text-gray-400 uppercase">${t.date}</p>
                         </div>
-                        <p class="font-black ${isExp?'text-slate-900':'text-emerald-500'}">₹${t.amount}</p>
+                        <p class="font-bold text-sm ${isExp?'text-gray-800':'text-green-600'}">${isExp?'-':'+'}₹${t.amount}</p>
                     </div>`;
             });
         } catch (e) {}
@@ -340,7 +287,7 @@
         };
         if(!payload.amount) return alert("Enter amount");
         const btn = document.getElementById('save-btn');
-        btn.innerText = "Processing...";
+        btn.innerText = "Saving...";
         try {
             const res = await fetch(`${API_URL}/transactions`, { method: "POST", headers: getHeaders(), body: JSON.stringify(payload) });
             if(res.ok) {
@@ -348,8 +295,8 @@
                 await fetchData();
                 switchTab('home');
             }
-        } catch (e) { alert("Error"); }
-        btn.innerText = "Confirm Transaction";
+        } catch (e) { alert("Network Error"); }
+        btn.innerText = "Save to History";
     }
 
     async function renderChart() {
@@ -365,11 +312,11 @@
                     labels: data.category_breakdown.map(i => i.category),
                     datasets: [{ 
                         data: data.category_breakdown.map(i => i.total), 
-                        backgroundColor: ['#0f172a', '#6366f1', '#10b981', '#f59e0b', '#ec4899'],
-                        borderWidth: 8, borderColor: '#fff'
+                        backgroundColor: ['#1a73e8', '#34a853', '#fabb05', '#ea4335', '#a142f4'],
+                        borderWidth: 2
                     }]
                 },
-                options: { cutout: '80%', plugins: { legend: { display: false } } }
+                options: { cutout: '70%', plugins: { legend: { display: false } } }
             });
         } catch (e) {}
     }
@@ -379,41 +326,42 @@
         const question = input.value.trim();
         if(!question) return;
         const chatBox = document.getElementById('chat-box');
-        chatBox.innerHTML += `<div class="flex justify-end"><div class="bg-indigo-600 text-white p-4 rounded-3xl rounded-tr-none text-xs font-bold shadow-lg">${question}</div></div>`;
+        chatBox.innerHTML += `<div class="chat-user p-3 max-w-[80%] text-sm self-end">${question}</div>`;
         input.value = '';
         try {
             const res = await fetch(`${API_URL}/chat`, { method: "POST", headers: getHeaders(), body: JSON.stringify({ question }) });
             const data = await res.json();
-            chatBox.innerHTML += `
-                <div class="flex gap-3">
-                    <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-robot"></i></div>
-                    <div class="bg-slate-100 p-4 rounded-3xl rounded-tl-none text-xs font-bold text-slate-600">${data.reply}</div>
-                </div>`;
+            chatBox.innerHTML += `<div class="chat-ai p-3 max-w-[80%] text-sm self-start">${data.reply}</div>`;
         } catch (e) {}
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     async function viewInvoice() {
-        document.getElementById('invoice-modal').classList.remove('hidden');
-        document.getElementById('invoice-modal').classList.add('flex');
-        const month = new Date().toISOString().slice(0, 7);
-        const res = await fetch(`${API_URL}/monthly-report/${month}`, { headers: getHeaders() });
+        const modal = document.getElementById('invoice-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        const res = await fetch(`${API_URL}/monthly-report/${currentReportMonth}`, { headers: getHeaders() });
         const data = await res.json();
-        let html = `<div class="text-center mb-8"><h2 class="font-black text-xl">STATEMENT</h2><p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">${data.month}</p></div>`;
-        html += `<div class="bg-slate-900 p-6 rounded-3xl text-white mb-6 flex justify-between"><div><p class="text-[9px] uppercase font-black text-slate-500">Savings</p><p class="font-black text-emerald-400">₹${data.total_income - data.total_expense}</p></div><div class="text-right"><p class="text-[9px] uppercase font-black text-slate-500">Expenses</p><p class="font-black text-red-400">₹${data.total_expense}</p></div></div>`;
-        html += `<div class="space-y-4">`;
+        let html = `
+            <div class="text-center mb-6"><h2 class="text-xl font-bold">Money Coach Statement</h2><p class="text-xs text-gray-400">${data.month}</p></div>
+            <div class="grid grid-cols-2 gap-4 mb-6 text-center">
+                <div class="p-3 bg-green-50 rounded-lg"><p class="text-[9px] uppercase font-bold text-green-600">Income</p><p class="font-bold">₹${data.total_income}</p></div>
+                <div class="p-3 bg-red-50 rounded-lg"><p class="text-[9px] uppercase font-bold text-red-600">Expense</p><p class="font-bold">₹${data.total_expense}</p></div>
+            </div>
+            <table class="w-full text-[10px] text-left">
+                <thead class="border-b uppercase"><tr><th class="py-2">Date</th><th>Category</th><th class="text-right">Amount</th></tr></thead>
+                <tbody>`;
         data.transactions.forEach(t => {
-            html += `<div class="flex justify-between border-b pb-3 border-slate-50"><div class="text-[10px] uppercase font-black">${t.category}<br><span class="text-slate-400 font-bold">${t.date}</span></div><div class="font-black text-[10px]">₹${t.amount}</div></div>`;
+            html += `<tr class="border-b"><td class="py-2 text-gray-400">${t.date}</td><td>${t.category}</td><td class="text-right font-bold">₹${t.amount}</td></tr>`;
         });
-        html += `</div>`;
+        html += `</tbody></table><div class="mt-6 text-center text-[9px] text-gray-400">Total Savings: ₹${data.total_income-data.total_expense}<br>Developed by Sayyed Mohsin Ali</div>`;
         document.getElementById('invoice-content').innerHTML = html;
-        currentReportMonth = month;
     }
 
     function closeInvoice() { document.getElementById('invoice-modal').classList.add('hidden'); }
     function downloadCSV() { window.location.href = `${API_URL}/download-csv/${currentReportMonth}?x_session_id=${sessionId}`; }
-    function downloadPDF() { html2pdf().from(document.getElementById('invoice-content-print')).save(); }
-    async function clearDatabase() { if(confirm("Clear all?")) { await fetch(`${API_URL}/clear-db`, { method: 'DELETE', headers: getHeaders() }); fetchData(); } }
+    function downloadPDF() { html2pdf().from(document.getElementById('invoice-print-area')).save(); }
+    async function clearDatabase() { if(confirm("Clear all data?")) { await fetch(`${API_URL}/clear-db`, { method: 'DELETE', headers: getHeaders() }); fetchData(); } }
 
     window.onload = () => { setEntryType('Expense'); fetchData(); };
 </script>
